@@ -90,7 +90,7 @@ fetch(trackDataUrl)
         })
         
         masterPlaylist = songs
-        masterPLaylistRotate();
+        masterPLaylistRotate(true);
 
         document.querySelector('li').classList.add('active')
         // document.querySelector('li[data-src="' + songs[0].src + '"]').classList.add('active');
@@ -438,7 +438,7 @@ function playlistCustom(query, type) {
 }
 
 // display master playlist
-function masterPLaylistRotate () {
+function masterPLaylistRotate (shuffle=false) {
     // mySongs = [];
     currentSongIndex = 0;
     songs = [];
@@ -450,7 +450,7 @@ function masterPLaylistRotate () {
           
             let obj = { title: t.title, src: t.src, artist : t.artist, id: t.id}
             songs.push(obj)
-            playlistHtml += trackListItemComponent(obj)
+            // playlistHtml += trackListItemComponent(obj)
 
  
             // get artists  for filtering
@@ -458,6 +458,10 @@ function masterPLaylistRotate () {
                 artists.push(t.artist)
             }
         })
+
+        if (shuffle) { songs = shuffleArray(songs) }
+        
+        songs.forEach(s => { playlistHtml += trackListItemComponent(s)})
         playlist.innerHTML = playlistHtml
         totalSongs.innerHTML = songs.length > 1 ? songs.length + ' SONGS' : songs.length + " SONG";
 
@@ -1272,3 +1276,4 @@ function playlist75remove() {
     p.classList.remove('playlist75');
     // document.getElementById('search-bar').value = ''
 }
+
