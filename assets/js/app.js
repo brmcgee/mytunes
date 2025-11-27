@@ -14,10 +14,13 @@ const playlist = document.getElementById('playlist');
 const nowPlaying = document.getElementById('now-playing');
 const publicPlaylist = document.getElementById('publicPlaylist');
 let totalSongs = document.getElementById('total-songs');
+let currentArtistInfo = {};
+let artistMeta = [];
 
 let myWidth = '25px'; let myHeight = '25px'; let myColorWhite = "#f6f6f6ff"
 
-let playlistAddIcon = `<svg fill="#0d0d0ebc"  width="40px" height="40px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M93.1,325.8V139.6H46.5C20.9,139.6,0,160.5,0,186.2v279.3C0,491.1,20.9,512,46.5,512h279.3c25.7,0,46.5-20.9,46.5-46.5 v-46.5H186.2C134.8,418.9,93.1,377.2,93.1,325.8z M465.5,0H186.2c-25.7,0-46.5,20.9-46.5,46.5v279.3c0,25.7,20.9,46.5,46.5,46.5 h279.3c25.7,0,46.5-20.9,46.5-46.5V46.5C512,20.9,491.1,0,465.5,0z M442.2,209.5h-93.1v93.1h-46.5v-93.1h-93.1v-46.5h93.1V69.8h46.5 v93.1h93.1V209.5z"></path> </g></svg>`
+let playNow = `<svg width="${myWidth}" height="${myHeight}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path opacity="0.1" fill-rule="evenodd" clip-rule="evenodd" d="M12 3C4.5885 3 3 4.5885 3 12C3 19.4115 4.5885 21 12 21C19.4115 21 21 19.4115 21 12C21 4.5885 19.4115 3 12 3ZM15.224 13.0171C16.011 12.5674 16.011 11.4326 15.224 10.9829L10.7817 8.44446C10.0992 8.05446 9.25 8.54727 9.25 9.33333L9.25 14.6667C9.25 15.4527 10.0992 15.9455 10.7817 15.5555L15.224 13.0171Z" fill="#323232"></path> <path d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" stroke="#323232" stroke-width="2"></path> <path d="M10.9 8.8L10.6577 8.66152C10.1418 8.36676 9.5 8.73922 9.5 9.33333L9.5 14.6667C9.5 15.2608 10.1418 15.6332 10.6577 15.3385L10.9 15.2L15.1 12.8C15.719 12.4463 15.719 11.5537 15.1 11.2L10.9 8.8Z" stroke="#323232" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>`
+let playlistAddIcon = `<svg fill="#0d0d0ebc"  width="${myWidth}" height="${myHeight}" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M93.1,325.8V139.6H46.5C20.9,139.6,0,160.5,0,186.2v279.3C0,491.1,20.9,512,46.5,512h279.3c25.7,0,46.5-20.9,46.5-46.5 v-46.5H186.2C134.8,418.9,93.1,377.2,93.1,325.8z M465.5,0H186.2c-25.7,0-46.5,20.9-46.5,46.5v279.3c0,25.7,20.9,46.5,46.5,46.5 h279.3c25.7,0,46.5-20.9,46.5-46.5V46.5C512,20.9,491.1,0,465.5,0z M442.2,209.5h-93.1v93.1h-46.5v-93.1h-93.1v-46.5h93.1V69.8h46.5 v93.1h93.1V209.5z"></path> </g></svg>`
 let whiteAddPlaylist = `<svg fill="${myColorWhite}" width="${myWidth}" height="${myHeight}" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg" stroke="${myColorWhite}"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M960 293.333v160H186.667C171.939 453.333 160 465.272 160 480v1253.33c0 14.73 11.939 26.67 26.667 26.67H1440c14.73 0 26.67-11.94 26.67-26.67V960h160v773.33c0 103.1-83.58 186.67-186.67 186.67H186.667C83.573 1920 0 1836.43 0 1733.33V480c0-103.093 83.573-186.667 186.667-186.667H960ZM586.667 800 1120 1120l-533.333 320V800ZM1626.67 0v293.333H1920v160h-293.33v293.334h-160V453.333h-293.34v-160h293.34V0h160Z" fill-rule="evenodd"></path> </g></svg>`
 let whiteDeleteIcon = `<svg width="${myWidth}" height="${myHeight}" viewBox="0 0 24 24" fill="${myColorWhite}" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 6H21M5 6V20C5 21.1046 5.89543 22 7 22H17C18.1046 22 19 21.1046 19 20V6M8 6V4C8 2.89543 8.89543 2 10 2H14C15.1046 2 16 2.89543 16 4V6" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M14 11V17" stroke="${myColorWhite}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M10 11V17" stroke="${myColorWhite}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>`
 let editIcon = `<svg width="${myWidth}" height="${myHeight}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="${myColorWhite}"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M21.2799 6.40005L11.7399 15.94C10.7899 16.89 7.96987 17.33 7.33987 16.7C6.70987 16.07 7.13987 13.25 8.08987 12.3L17.6399 2.75002C17.8754 2.49308 18.1605 2.28654 18.4781 2.14284C18.7956 1.99914 19.139 1.92124 19.4875 1.9139C19.8359 1.90657 20.1823 1.96991 20.5056 2.10012C20.8289 2.23033 21.1225 2.42473 21.3686 2.67153C21.6147 2.91833 21.8083 3.21243 21.9376 3.53609C22.0669 3.85976 22.1294 4.20626 22.1211 4.55471C22.1128 4.90316 22.0339 5.24635 21.8894 5.5635C21.7448 5.88065 21.5375 6.16524 21.2799 6.40005V6.40005Z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M11 4H6C4.93913 4 3.92178 4.42142 3.17163 5.17157C2.42149 5.92172 2 6.93913 2 8V18C2 19.0609 2.42149 20.0783 3.17163 20.8284C3.92178 21.5786 4.93913 22 6 22H17C19.21 22 20 20.2 20 18V13" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>`
@@ -48,6 +51,7 @@ let currentSongIndex = 0;
 
 let artists = [];
 let mySongs = [];
+let tlcCount = 0;  
 
 // initial song load - song set at fetch response
 let songs = 
@@ -91,12 +95,31 @@ fetch(trackDataUrl)
         
         masterPlaylist = songs
         masterPLaylistRotate(true);
+        // called again after artists load api @ handleArtistMeta()
 
         document.querySelector('li').classList.add('active')
-        // document.querySelector('li[data-src="' + songs[0].src + '"]').classList.add('active');
-
 
         console.log(`${data.length} Tracks loaded!`)
+
+
+
+        
+        handleArtistMeta(artists)
+        loadSong(0)
+       
+
+        //fetch meta data store to db  -- STAYS COMMENT RUN AS NEEDED
+        //artists
+        // ==========================================================
+                    // let acount = 0;
+                    // setInterval(() => {
+                    //     let art = (artists[acount++])
+                    //     fetchMetaArtist(art)
+                    //     postData();
+                    //     console.log('item # ', acount)
+                    // }, 1000)
+        // ==========================================================                    
+        //fetch meta data store to db  -- STAYS COMMENT RUN AS NEEDED
 })
 
 .catch(error => {
@@ -246,7 +269,9 @@ function userPlaylistNames(){
 
 }
 
+//public playlist
 function myplaylistsTemplate(){
+
     let html = ``;
     let playlists = userPlaylistNames();
     let count = 0;
@@ -268,11 +293,11 @@ function myplaylistsTemplate(){
 
         lists.forEach(l => {
             console.log(d)
-            songs += `<div class="public-playlist-dropdown-item" >${songsCount++}. ${l.title}</div>`
+            songs += `<div class="public-playlist-dropdown-item"  >${songsCount++}. ${l.title}</div>`
         })
 
         html += `
-            <div class="public-btn-group">
+            <div class="public-btn-group m-0">
                 <button class="public-songs-btn" onclick="showListSongs(${d.id})">
                     <div class="row m-0 p-0">
                     <div class="col-1">${moreIcon}</div>
@@ -307,7 +332,7 @@ function myplaylistsTemplate(){
 
             <div id="songs${d.id}" class="public-playlist-dropdown d-none" >${songs}
                 <button id="public${d.id}" type="button" onclick="myPlaylist('${name}', false)" 
-                    class="btn-light border-0 rounded-3 mt-3" data-bs-dismiss="modal">
+                    class="btn-light border-0 rounded-3" data-bs-dismiss="modal">
                     <span class=""  id="list${d.id}">
                         <b> Load Playlist</b> ${playlistPlayIcon}
                     </span>
@@ -324,6 +349,87 @@ function myplaylistsTemplate(){
     return html;
 }
 
+// render playlists
+function myPlaylist (playlistName, shuffle = false) {
+
+
+
+     tlcCount = 0;  
+    let isNum = false;
+    (typeof playlistName == 'number') ? isNum = true : ''
+    // playlist.innerHTML = ``;
+    currentSongIndex = 0;
+    songs = [];
+    let playlistHtml = '';
+    let playlistSongs = (getCookie(playlistName) != '') ? JSON.parse(getCookie(playlistName)) : '';
+
+    if (isNum){
+       
+        publicList.forEach(item => {
+            if (playlistName == item.id) {
+
+                playlistSongs = item.track
+                playlistName = item.playlist
+
+                if (shuffle == true) {
+                    shuffleArray(playlistSongs)
+                } 
+            }
+
+        })
+      
+    } 
+
+    // if (getCookie(playlistName) == '') { 
+    //     notify(`No songs for playlist ${playlistName}`, 'purple', 2000); 
+    //     return;
+    // }
+    // console.log('loading playlist ', playlistName)
+    // console.log('my songs @ playlist', playlistSongs)
+// console.log(publicList[0].user)
+    playlistHtml += 
+
+    `
+    <h5 class="playlist-title rounded-0 border-0 fs-3">
+        <em class="ff-secondary fw-bold">${playlistName} </em>
+    </h5>
+    <div class="playlist-btn-group ${(isNum) ? 'd-none' : ''}">
+    
+        <button onclick="loadDeletePlaylistModal('${playlistName}')" data-bs-toggle="modal" data-bs-target="#mainModal" type="button" class="mt-2 delete-playlist-btn">
+            <img src="assets/icons/delete.png" alt="Clear Playlist" width="25" height="25" class="me-2"> 
+            Delete 
+        </button>
+        
+        <button onclick="sharePlaylist('${playlistName}')" data-bs-toggle="modal" data-bs-target="#mainModal" type="button" 
+                class="mt-2 delete-playlist-btn ">
+            ${shareIcon} 
+            <span class="ms-2"> Share</span> 
+        </button>
+
+        <button onclick="loadEditPlaylistModal('${playlistName}')" 
+                data-bs-toggle="modal" data-bs-target="#mainModal" type="button" class="mt-2 edit-playlist-btn">
+        ${editIcon} <span class="ms-2">Edit</span> 
+    </button>
+    </div>
+
+    <hr>`
+
+    playlistSongs.forEach(t => {
+        let obj = { title: t.title, src: t.src, artist : t.artist, id: t.id}
+        songs.push(obj)
+        playlistHtml += trackListItemComponent(obj)
+    })
+    // songs = playlistSongs;
+
+    playlistHtml += `<div style="padding-bottom: 100px;"></div>`
+    playlist.innerHTML = playlistHtml;
+    totalSongs.innerHTML = songs.length > 1 ? songs.length + ' SONGS' : songs.length + " SONG";
+    loadSong(currentSongIndex);
+
+
+}
+
+
 // myplaylist modal functions 
 function loadMyplaylistModal(){
     let title = `My Playlists`;
@@ -339,16 +445,21 @@ function loadMyplaylistModal(){
 
 // track list item component return  
 function trackListItemComponent(obj){
-
+    let currentArtistMeta = {}
+ 
     let playlistNames = getCookie('newPlaylistName').split(',');
 
-                        // <button onclick="loadAddPlaylistModal()" data-bs-toggle="modal" data-bs-target="#mainModal" type="button" 
-                        //         class="create-playlist-btn" >
-                        //     + New Playlist
-                        // </button>
+    
+    artistDb.forEach((a) => {
+       
+        if (a.artist.toLowerCase() == obj.artist.toLowerCase()) {
+            currentArtistMeta = a
+        }
+    }) 
+
     let html =    `         
             <div id="playlistItem${obj.id}" 
-                 class="playlist-item-container rounded-2 border border-secondary shadow-sm mb-1 p-1">
+                 class="playlist-item-container shadow mb-1 p-1 bg-light py-3">
 
                 <div class="dropdown">
                     <button class="add-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -359,36 +470,54 @@ function trackListItemComponent(obj){
             
                         <div id="userPlaylist">`
                         
-    playlistNames.forEach(name => {
-        html += `
-        <li><a onclick="addToPlaylist(${obj.id}, this.innerHTML)" class="dropdown-item" href="#">${name}</a></li>`
-    })   
-                        
+                playlistNames.forEach(name => {
+                    html += `
+                    <li><a onclick="addToPlaylist(${obj.id}, this.innerHTML)" class="dropdown-item" href="#">${name}</a></li>`
+                })   
+    
            html +=             `
 
                         </div>
                     </ul>
                 </div>
 
-                <li class="playlist-items w-100" style="cursor:pointer;" onclick="playlist75remove()" 
+                <li class="playlist-items w-100 d-flex align-items-center" style="cursor:pointer;" onclick="playlist75remove()" 
                     data-src ="${obj.src}" 
                     data-title ="${obj.title}" 
                     data-artist ="${obj.artist}"
-                    data-id="${obj.id}">
-                  
-                    <b class="text-uppercase">${obj.title}</b>
-                    <br>
-                    <span class="small ms-2">${obj.artist}</span>
+                    data-id="${obj.id}"
+                >
                     
+            ${currentArtistMeta.thumb == null  
+                    ? 
+                        (currentArtistMeta.fanart === null)
+                                    ? `<img src="/music.ico" width="60px" height="60px" alt="${obj.artist}" class="rounded-circle me-1 shadow"/>` 
+                                    : `<img src="/music.ico" width="60px" height="60px" alt="${currentArtistMeta.fanart}" class="rounded-circle me-1 shadow"/>`
+
+                    : `<img src="${currentArtistMeta.thumb}" width="60px" height="60px" alt="${obj.artist}" class="rounded-circle me-1 shadow"/>` }
+                        
+                    <div style="min-width:210px;">
+                        <span class=""><em>${obj.title}</em></span>
+                        <br>
+                        <b class="text-uppercase text-dark" style="font-family:Arial;font-size:14px;">${obj.artist}</b>
+                             <span class="position-relative bottom-0 small"> </span>
+                    </div>    
+                        <button class="play-now border-0 bg-transparent position-relative bottom-0 float-end" 
+                                onclick="loadSong(${tlcCount++})">
+                                ${playNow} 
+                        </button>
+                  
                 </li>
             </div>`
 
             return html;
 }
+// attach play icon to all list items created above 
+document.querySelectorAll('.play-now').forEach(item => { item.innerHTML = `${playNow}`})
 
 // search title/author
 function playlistCustom(query, type) {
-    
+    tlcCount = 0;  
     playlist.innerHTML = ``;
     currentSongIndex = 0;
     
@@ -401,17 +530,21 @@ function playlistCustom(query, type) {
 
     masterPlaylist.forEach(song => {
         
-        // if (type === 'artist' && song.artist.toLowerCase().includes(query.toLowerCase())){
-        //     querySongs.push(song)
-        // }
-        // if (type === 'title' && song.title.toLowerCase().includes(query.toLowerCase())){
-        //     querySongs.push(song)
-        // }
+        if (type == "artist") {
+            
+            if (song.artist.toLowerCase().includes(query.toLowerCase())){
+                querySongs.push(song)
+            }
 
-         if (song.title.toLowerCase().includes(query.toLowerCase()) ||
-            song.artist.toLowerCase().includes(query.toLowerCase())){
-            querySongs.push(song)
+        } else {
+
+            if (song.title.toLowerCase().includes(query.toLowerCase()) ||
+                song.artist.toLowerCase().includes(query.toLowerCase())){
+                querySongs.push(song)
+            }
+
         }
+
 
     })
     // songs = querySongs;
@@ -440,6 +573,7 @@ function playlistCustom(query, type) {
 // display master playlist
 function masterPLaylistRotate (shuffle=false) {
     // mySongs = [];
+    tlcCount = 0;  
     currentSongIndex = 0;
     songs = [];
     let playlistHtml = '';
@@ -489,14 +623,6 @@ function deleteTrackFromPlaylist(id, playlist){
             if (deleteTrackArr[x].id == id) {
                 removedTrack = deleteTrackArr.splice(x, 1)
                 document.getElementById(`track${id}`).classList.add('bg-danger-subtle')
-                // if (deleteTrackArr.length > 0){
-                //     setCookie(playlist, JSON.stringify(deleteTrackArr), 365)
-                //     deleteTrackArr = [];
-                //     myPlaylist(playlist);
-                // } else {
-                //     deletePlaylist(playlist)
-                // }
-                // console.log(deleteTrackArr)
                 return;
             }
         }
@@ -642,84 +768,6 @@ function shuffleArray(array) {
 }
 
 
-// render playlists
-function myPlaylist (playlistName, shuffle = false) {
-
-
-
-
-    let isNum = false;
-    (typeof playlistName == 'number') ? isNum = true : ''
-    // playlist.innerHTML = ``;
-    currentSongIndex = 0;
-    songs = [];
-    let playlistHtml = '';
-    let playlistSongs = (getCookie(playlistName) != '') ? JSON.parse(getCookie(playlistName)) : '';
-
-    if (isNum){
-       
-        publicList.forEach(item => {
-            if (playlistName == item.id) {
-
-                playlistSongs = item.track
-                playlistName = item.playlist
-
-                if (shuffle == true) {
-                    shuffleArray(playlistSongs)
-                } 
-            }
-
-        })
-      
-    } 
-
-    // if (getCookie(playlistName) == '') { 
-    //     notify(`No songs for playlist ${playlistName}`, 'purple', 2000); 
-    //     return;
-    // }
-    // console.log('loading playlist ', playlistName)
-    // console.log('my songs @ playlist', playlistSongs)
-// console.log(publicList[0].user)
-    playlistHtml += 
-
-    `
-    <h5 class="playlist-title">${playlistName} </h5>
-    <div class="playlist-btn-group ${(isNum) ? 'd-none' : ''}">
-    
-        <button onclick="loadDeletePlaylistModal('${playlistName}')" data-bs-toggle="modal" data-bs-target="#mainModal" type="button" class="mt-2 delete-playlist-btn">
-            <img src="assets/icons/delete.png" alt="Clear Playlist" width="25" height="25" class="me-2"> 
-            Delete 
-        </button>
-        
-        <button onclick="sharePlaylist('${playlistName}')" data-bs-toggle="modal" data-bs-target="#mainModal" type="button" 
-                class="mt-2 delete-playlist-btn ">
-            ${shareIcon} 
-            <span class="ms-2"> Share</span> 
-        </button>
-
-        <button onclick="loadEditPlaylistModal('${playlistName}')" 
-                data-bs-toggle="modal" data-bs-target="#mainModal" type="button" class="mt-2 edit-playlist-btn">
-        ${editIcon} <span class="ms-2">Edit</span> 
-    </button>
-    </div>
-
-    <hr>`
-
-    playlistSongs.forEach(t => {
-        let obj = { title: t.title, src: t.src, artist : t.artist, id: t.id}
-        songs.push(obj)
-        playlistHtml += trackListItemComponent(obj)
-    })
-    // songs = playlistSongs;
-
-    playlistHtml += `<div style="padding-bottom: 100px;"></div>`
-    playlist.innerHTML = playlistHtml;
-    totalSongs.innerHTML = songs.length > 1 ? songs.length + ' SONGS' : songs.length + " SONG";
-    loadSong(currentSongIndex);
-
-
-}
-
 
 
 // public playlists functions
@@ -782,7 +830,6 @@ function saveToMyplaylist(id){
     myModal.hide();
     
 }
-
 function fetchPublicPlaylists(){
     // console.log(publicPlaylistUrl)
     // console.log('loading public')
@@ -798,16 +845,17 @@ function fetchPublicPlaylists(){
         d.track.forEach(t => {
             songs += `<div class="public-playlist-dropdown-item mb-0" >${songsCount++}. ${t.title}</div>`
         })
-
+        
         html += `
          
-            <div class="d-flex justify-content-between shadow py-3 px-2 rounded-1 bg-secondary-subtle">
+            <div class="d-flex justify-content-between shadow py-4 px-2 rounded-1 shadow-xl">
             
-                    <button class="w-100 text-dark border-0 rounded-1 p-2 text-start position-relative" onclick="showListSongs(${d.id})">
+                    <button class="w-100 text-dark border-0 rounded-1 p-2 text-start position-relative bg-transparent" onclick="showListSongs(${d.id})">
                         <span class="badge text-bg-secondary bg-purple position-absolute top-0 start-0 translate-middle badge rounded-pill">
                             <b><small>${d.track.length}</b></small>
                         </span>
-                        <b >${d.playlist}</b> playlist by <b>${d.user}</b>
+
+                        <em class="ff-secondary fw-bold">${d.playlist}</em> playlist by <b>${d.user}</b>
                     </button>
 
 
@@ -844,7 +892,7 @@ function fetchPublicPlaylists(){
 
           
         
-            <hr>
+            <br>
             `
         songsCount = 1;
         return html
@@ -882,62 +930,176 @@ function fetchPublicPlaylists(){
     // publicPlaylist.innerHTML = `loading list`
 }
 
-// artists.forEach(a => {
-//     let arr = [];
-//     artists.forEach(a => {
-//         fetchMetaArtist(a)
-//     })
-// })
+
+// meta and post functions
 function fetchMetaArtist(artist){
     if (artist == 'ACDC') { artist = 'AC/DC' }
     if (artist == 'The Notorious BIG') { artist = 'The Notorious B.I.G.' }
     if (artist == 'Afrika Bambaataa & the Soulsonic Force') { artist = 'Afrika Bambaataa' }
     if (artist == 'Alan Jackson and Jimmy Buffett') { artist = 'Alan Jackson' }
+    if (artist == 'Brooks & Dunn') { artist = 'Ronnie Dunn' }
     let url = `https://www.theaudiodb.com/api/v1/json/2/search.php?s=${artist}`
 
-
-    // console.log(artist)
      fetch(url)
-      .then(response => response.json()) // Process the response body as JSON
+      .then(response => response.json()) 
       .then(data => {
 
-        // if (data.length > 0){
-        console.log(data)
-            let artist = data
+
+            let artist = data;
+            console.log(artist)
             if (artist.artists !== null) {
+
+                let id = artist.artists[0].idArtist;
                 let banner = artist.artists[0].strArtistBanner;
                 let cutout = artist.artists[0].strArtistCutout
-                let fanart = artist.artists[0].strArtistFanart
+                let fanart = artist.artists[0].strArtistFanart;
+                let fanart2 = artist.artists[0].strArtistFanart2;
+                let fanart3 = artist.artists[0].strArtistFanart3;
+                let fanart4 = artist.artists[0].strArtistFanart4;
                 let logo = artist.artists[0].strArtistLogo;
                 let genre = artist.artists[0].strGenre;
+                let style = artist.artists[0].strStyle;
+                let mood = artist.artists[0].strMood;
+                let web = artist.artists[0].strWebsite
+
+;
                 let fb = artist.artists[0].strFacebook;
                 let clearart = artist.artists[0].strArtistClearart;
                 let wideThumb = artist.artists[0].strArtistWideThumb;
-                let strFacebook = artist.artists[0].strFacebook;
-                let thumb = artist.artists[0].strArtistThumb
+                let thumb = artist.artists[0].strArtistThumb;
+                let bio = artist.artists[0].strBiographyEN;
+                let alertnate = artist.artists[0].strArtistAlternate;
+                let born = artist.artists[0].intBornYear;
 
 
+                let artistObj = {
+                    id: id,
+                    artist: artist.artists[0].strArtist,
+                    born: born,
+                    logo: logo,
+                    alertnate: alertnate,
+                    clearart: clearart,
+                    banner: banner,
+                    cutout: cutout,
+                    fanart: fanart,
+                    fanart2: fanart2,
+                    fanart3: fanart3,
+                    fanart4: fanart4,
+                    wideThumb: wideThumb,
+                    thumb: thumb,
+                    facebook: fb,
+                    genre: genre,
+                    style : style,
+                    mood: mood,
+                    website : web,
+                    bio: bio,
+                }
 
+                currentArtistInfo = {};
+                currentArtistInfo = artistObj;
+       
                 if (typeof(artist) == 'object') {
+                    
                     document.getElementById("img-logo").src = logo
-                    document.getElementById('playerApp').style.backgroundImage = `url("${thumb}")`
-            
+                    document.getElementById('playerApp').style.backgroundImage = `url("${thumb}")`           
                 } 
 
            
             } else {
-                    document.getElementById("img-logo").src = '/favico.ico'
+                    document.getElementById("img-logo").src = '/music.ico'
                     document.getElementById('playerApp').style.backgroundImage = `url('../../assets/bg/bg3.jpg')`
             }
 
 
-
+            
         // }
 
       })
       .catch(error => console.error('Error:', error));
 }
+async function postData() {
+  const url = `${pre}/music/meta-playlist`; // Example API endpoint
 
+  try {
+    const response = await fetch(url, {
+      method: 'POST', 
+      headers: {
+        'Content-Type': 'application/json' 
+      },
+      body: JSON.stringify(currentArtistInfo) 
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const responseData = await response.json(); 
+        console.log('Success:', responseData);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+
+// ++++++++++++++++++++++++++++++++++++
+function storeMeta(){
+    let tid = currentArtistInfo.artist;
+    class MyMeta {
+        constructor(id, arr) {
+            this.id = id;
+            this.arr = arr;
+        }
+
+        display() {
+            // console.log(`${this.id}`);
+            console.log(this.arr);
+        }
+    }
+   
+    const tempMetaData = new MyMeta(tid, currentArtistInfo);
+    // console.log(tempMetaData.display())
+
+    return (tempMetaData.display())
+}
+
+
+
+
+
+function loadSongInfoModal() {
+    console.log(currentArtistInfo);
+    let html = `
+    <div class="rounded-2" style="height:100%;width:100%;>
+        <img src=${currentArtistInfo.banner} width="100%" />
+
+        <br>
+        <h3 class="my-2 badge text-bg-dark bg-purple fs-3 rounded-pill"> ${currentArtistInfo.genre} </h3>
+        
+        <img src=${currentArtistInfo.wideThumb} alt=${currentArtistInfo.artist} width="100%" class="rounded-2"/>
+        <small class="fw-bold border-bottom border-dark">${currentArtistInfo.alertnate}</small>
+
+        
+        <br>
+        <p class="fw-bold text-break px-2 ff-secondary" style="text-indent: 50px; text-align: justify;"> ${currentArtistInfo.bio} </p>
+        <br>
+        <img src=${currentArtistInfo.cutout} alt=${currentArtistInfo.artist} width="100%" />
+        <img src=${currentArtistInfo.fanart} alt=${currentArtistInfo.artist} width="100%" />
+        <img src=${currentArtistInfo.fanart2} alt=${currentArtistInfo.artist} width="100%" />
+        <img src=${currentArtistInfo.fanart3} alt=${currentArtistInfo.artist} width="100%" />
+        <img src=${currentArtistInfo.fanart4} alt=${currentArtistInfo.artist} width="100%" />
+        <img src=${currentArtistInfo.clearart} alt=${currentArtistInfo.artist}  width="100%" />
+        <img src=${currentArtistInfo.thumb} alt=${currentArtistInfo.artist} width="100%" />
+      </div>  
+
+    `
+    let title = `${currentArtistInfo.artist}`;
+    let body = html;
+    let footer = `<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>`;
+    let size = 'md';
+    let type = 'purple'
+    setModal(title, body, footer, type, size)
+    // console.log(title, body, footer, type, size)
+}
 function fetchLogoArtist(artist){
     let url = `https://www.theaudiodb.com/api/v1/json/2/search.php?s=${artist}`
     let image = ''
@@ -1135,16 +1297,32 @@ function setPlaylists(){
 function loadArtistModal() {
 let html = ``;
 
-artists.forEach(a => {
+artistDb.forEach(a => {
    
-    // console.log(imgArtist)
+    // artist component
     html += `
-    <li class="artist list-group-item d-flex justify-content-between align-items-center p-2 border mb-2 shadow-sm rounded-2">
-        <button class="border-0 bg-transparent text-start w-100 cursor-pointer"
-                onclick="playlistCustom('${a}', 'artist')" data-bs-dismiss="modal">
-            <b class="text-dark fw-bold">${a}</b>
+    <li class="artist list-group-item p-1 mb-4 cursor-pointer bg-light mb-3 border-3 shadow rounded-bottom">
+        <div class="cursor-pointer"
+                onclick="playlistCustom('${a.artist}', 'artist')" data-bs-dismiss="modal">
+            <div class="row m-0 p-0"> 
+                 
+                <img src="${!a.thumb.includes('htt') ? '/music.ico' : a.thumb }" width="120" height="120" class="col-3 rounded-3 shadow p-0 m-0"/>
+              
+
+                
+                <div class="col-8 text-center">
+                    <div class=" text-dark fw-bold fs-3" style="font-wieght:500;">
+                        ${a.artist}
+                    </div>
+                    
+                    <span class="ms-1 badge text-dark bg-groovy2 fw-bold rounded-pill">${a.genre}</span><br>
+                    <span class="ms-1 badge text-light bg-green rounded-pill">${a.mood !== 'null' ? a.mood : ''}</span><br>
+                    <span class="ms-1 badge text-dark bg-groovy rounded-pill">${a.style}</span>
+                </div>
+            </div>
             
-        </button>
+            
+        </div>
         
     </li>
     `
@@ -1154,9 +1332,11 @@ artists.forEach(a => {
                  <span class="fs-4">Artists</span>`;
     let body = html;
     let footer = `<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>`;
-    let size = 'md';
+    let size = 'fullscreen-sm-down';
     let type = 'purple'
     setModal(title, body, footer, type, size)
+
+
     
 }
 
@@ -1205,6 +1385,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     fetchPublicPlaylists()
+
+
+
 
 })
 
@@ -1276,4 +1459,51 @@ function playlist75remove() {
     p.classList.remove('playlist75');
     // document.getElementById('search-bar').value = ''
 }
+
+
+let artistDb = [];
+function handleArtistMeta(artistArr){
+    let fetchUrl = `${pre}/music/meta`
+
+    fetch(fetchUrl)
+    .then(response => response.json()) 
+    .then(data => {
+           
+        artistMeta = (data)
+        artistArr.forEach(a => {
+            let name = (a);
+            let found = (data.find(x => x.artist == name));
+
+
+            if (found) {
+                let obj = {
+                    'artist' : name,
+                    'genre' : found.genre,
+                    'mood' : found.mood,
+                    'thumb' : found.thumb,
+                    'wideThumb' : found.wideThumb,
+                    'fanart' : found.fanart
+
+                }
+                artistDb.push(found)
+            }
+            
+            // data.forEach(d => {
+            //     console.log('artist ', d)
+            //     console.log('query', d.artist.artist)
+            // })
+        })
+
+            //    myPlaylist(9,true)
+            masterPLaylistRotate(true);
+            document.getElementById('shades').classList.remove('open');
+        
+    })
+
+    .catch(error => {
+        console.error('Error:', error)
+        notify(error, 'error', 3500)
+    }); 
+}
+
 
