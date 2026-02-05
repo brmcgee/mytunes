@@ -1,0 +1,104 @@
+{
+  "id": 1770226325899,
+  "name": "Remote Jams - Just Right",
+  "songs": [
+    {
+      "id": 1844,
+      "title": "Down Low Drama",
+      "artist": "Christian French",
+      "album": "Teenage Times",
+      "img": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdfWwJaX0ESKmPigAU5wVe7gAX-nA7QQlkQA&s",
+      "path": "https://dl.espressif.com/dl/audio/gs-16b-1c-44100hz.mp3"
+    },
+    {
+      "id": 2909,
+      "title": "Sweet but Psycho still a banger",
+      "artist": "Olivia Booles",
+      "album": "SOUR",
+      "img": "https://crdms.images.consumerreports.org/f_auto,w_600/prod/products/cr/models/404405-wireless-home-studio-style-headphones-jbl-live-660nc-10022266.png",
+      "path": "https://dl.espressif.com/dl/audio/ff-16b-1c-44100hz.mp3"
+    },
+    {
+      "id": 2949,
+      "title": "Scooby Dooby Doo",
+      "artist": "William Nelson",
+      "album": "Minced Meat",
+      "img": "https://images-na.ssl-images-amazon.com/images/I/81aIKP00rlL._AC_UL600_SR600,600_.jpg",
+      "path": "https://dl.espressif.com/dl/audio/ff-16b-1c-44100hz.mp3"
+    },
+    {
+      "id": 3332,
+      "title": "Somebody to Love",
+      "artist": "Spanish Monkeys",
+      "album": "After Hours",
+      "img": "https://c8.alamy.com/comp/CRD8YC/funny-cartoon-girl-playing-the-guitar-CRD8YC.jpg",
+      "path": "https://dl.espressif.com/dl/audio/ff-16b-1c-44100hz.mp3"
+    },
+    {
+      "id": 2949,
+      "title": "The afternoon Stroll through the park",
+      "artist": "William Nelson",
+      "album": "Minced Meat",
+      "img": "https://images-na.ssl-images-amazon.com/images/I/81aIKP00rlL._AC_UL600_SR600,600_.jpg",
+      "path": "https://dl.espressif.com/dl/audio/ff-16b-1c-44100hz.mp3"
+    },
+    {
+      "id": 2212,
+      "title": "People are Awesome",
+      "artist": "DJ Flavor",
+      "album": "Midnight Vibes",
+      "img": "https://m.media-amazon.com/images/I/51wFxFndcZL._SL500_.jpg",
+      "path": "https://dl.espressif.com/dl/audio/ff-16b-1c-44100hz.mp3"
+    },
+    {
+      "id": 2212,
+      "title": "Everybody love a good pizza party!",
+      "artist": "DJ Flavor",
+      "album": "Midnight Vibes",
+      "img": "https://m.media-amazon.com/images/I/51wFxFndcZL._SL500_.jpg",
+      "path": "https://dl.espressif.com/dl/audio/ff-16b-1c-44100hz.mp3"
+    },
+    {
+      "id": 2309,
+      "title": "Everybodys Calling",
+      "artist": "Hannah Banana",
+      "album": "Sweet Escape",
+      "img": "https://upload.wikimedia.org/wikipedia/en/thumb/8/87/Janet_Jackson_-_Someone_to_call_my_Lover.png/250px-Janet_Jackson_-_Someone_to_call_my_Lover.png",
+      "path": "https://dl.espressif.com/dl/audio/ff-16b-1c-44100hz.mp3"
+    },
+    {
+      "id": 2949,
+      "title": "Thats what I call Jams",
+      "artist": "Olivia Booles",
+      "album": "SOUR",
+      "img": "https://images-na.ssl-images-amazon.com/images/I/81aIKP00rlL._AC_UL600_SR600,600_.jpg",
+      "path": "https://dl.espressif.com/dl/audio/ff-16b-1c-44100hz.mp3"
+    },
+    {
+      "id": 3332,
+      "title": "Somebody to Love after all",
+      "artist": "Spanish Monkeys",
+      "album": "After Hours",
+      "img": "https://c8.alamy.com/comp/CRD8YC/funny-cartoon-girl-playing-the-guitar-CRD8YC.jpg",
+      "path": "https://dl.espressif.com/dl/audio/ff-16b-1c-44100hz.mp3"
+    },
+    {
+      "id": 2949,
+      "title": "Scooby Dooby Doo",
+      "artist": "William Nelson",
+      "album": "Minced Meat",
+      "img": "https://images-na.ssl-images-amazon.com/images/I/81aIKP00rlL._AC_UL600_SR600,600_.jpg",
+      "path": "https://dl.espressif.com/dl/audio/ff-16b-1c-44100hz.mp3"
+    },
+    {
+      "id": 2212,
+      "title": "People are Awesome",
+      "artist": "DJ Flavor",
+      "album": "Midnight Vibes",
+      "img": "https://m.media-amazon.com/images/I/51wFxFndcZL._SL500_.jpg",
+      "path": "https://dl.espressif.com/dl/audio/ff-16b-1c-44100hz.mp3"
+    }
+  ],
+  "shareId": "l07hqhn575l7pa",
+  "sharedAt": "2026-02-04T17:32:19.571Z"
+}

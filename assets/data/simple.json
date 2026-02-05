@@ -1,0 +1,32 @@
+{
+  "id": 1770292238782,
+  "name": "Easy Listening Hits",
+  "songs": [
+    {
+      "id": 3938,
+      "title": "Chris Tomlin - Good Good Father",
+      "artist": "Chris Tomlin",
+      "album": "Good Good Father",
+      "img": "assets/thumb/chgoodgoodfath.jpg/small",
+      "path": "assets/audio/Chris%20Tomlin%20-%20Good%20Good%20Father.mp3"
+    },
+    {
+      "id": 2322,
+      "title": "Beautiful Crazy",
+      "artist": "Luke Combs",
+      "album": "This One's for You Too",
+      "img": "assets/thumb/lubeautifulcra.jpg/small",
+      "path": "assets/audio/Luke%20Combs%20-%20Beautiful%20Crazy.mp3"
+    },
+    {
+      "id": 1990,
+      "title": "El Cerrito Place",
+      "artist": "Kenny Chesney",
+      "album": "Welcome to the Fishbowl",
+      "img": "assets/thumb/keelcerritopla.jpg/small",
+      "path": "assets/audio/Kenny%20Chesney%20-%20El%20Cerrito%20Place.mp3"
+    }
+  ],
+  "shareId": "m2o99sw6ux6bp3",
+  "sharedAt": "2026-02-05T11:51:52.249Z"
+}
